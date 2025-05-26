@@ -5,25 +5,46 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Authentication Failure Example</title>
        <link rel="stylesheet" href="style/challenges.css">
-       <!-- <script src="scripts/showExplanation.js" defer></script> Imported part of seucureJQUeryDisplay        -->
+       <script src="scripts/showExplanation.js" defer></script>  
 </head>
 <body>
 
 <h1>Authentication Failure Example</h1>
 
+  <h2 class="title">Info:</h2>
+  <p>Use the below information to login:</p>
+  <ul>
+    <li>admin</li>
+    <li>password123</li>
+  </ul>
+
 <!-- ❌ Insecure Form -->
-<h2>❌ Insecure Login</h2>
-<input type="text" id="badUsername" placeholder="Username">
-<input type="password" id="badPassword" placeholder="Password">
-<button onclick="insecureLogin()">Login</button>
-<div id="badOutput" class="output"></div>
+ <div class="section">
+  <h2>❌ Insecure Login</h2>
+  <input type="text" id="badUsername" placeholder="Username">
+  <input type="password" id="badPassword" placeholder="Password">
+  <button onclick="insecureLogin()">Login</button>
+  <div id="badOutput" class="output"></div>
+</div>
+
 
 <!-- ✅ Secure Form -->
-<h2>✅ Secure Login</h2>
-<input type="text" id="goodUsername" placeholder="Username">
-<input type="password" id="goodPassword" placeholder="Password">
-<button onclick="secureLogin()">Login</button>
-<div id="goodOutput" class="output"></div>
+ <div class="section">
+  <h2>✅ Secure Login</h2>
+  <input type="text" id="goodUsername" placeholder="Username">
+  <input type="password" id="goodPassword" placeholder="Password">
+  <button onclick="secureLogin()">Login</button>
+  <div id="goodOutput" class="output"></div>
+</div>
+
+
+  <h2 class="title" id="explanation">Explanation:</h2>
+  <p class="text">
+  Insecure login: Exposes credentials in frontend code and does no hashing.<br>
+  Secure login (simulated): Uses <b>SHA-256</b> hashing with <b>crypto.subtle</b> and checks against a stored hash (mimicking backend auth).
+  </p>
+
+
 
 <script>
 // ❌ Insecure: Hardcoded credentials on client side
@@ -78,7 +99,9 @@ async function secureLogin() {
     console.log("Hashed Password:" + passHash);
     console.log("Valid Hash:" + validHash)
   }, 500); // simulate delay
+    showExplanation();
 }
+
 </script>
 
 </body>

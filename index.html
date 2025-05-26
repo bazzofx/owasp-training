@@ -218,8 +218,40 @@
                     <button class="btn btn-success" onclick="markCompleted('dior')" style="display: none;">Mark Complete</button>
                 </div>
             </div>
-        </div>
 
+              <!-- Clickjacking -->
+            <div class="vulnerability-card available" data-id="dior">
+                <div class="status-badge status-available">Bonus</div>
+                <div class="card-header">
+                    <div class="vulnerability-rank">⚡</div>
+                </div>
+                <div class="vulnerability-title">Clickjacking</div>
+                <div class="vulnerability-description">
+                    Clickjacking example that demonstrates a vulnerable implementation and how to prevent it using the X-Frame-Options or Content-Security-Policy HTTP headers
+                </div>
+                <div class="vulnerability-actions">
+                    <a href="clickjacking.html" class="btn btn-primary">Start Challenge</a>
+                    <button class="btn btn-success" onclick="markCompleted('dior')" style="display: none;">Mark Complete</button>
+                </div>
+            </div>
+            <!-- CSRF -  Cross-Site Request Forgery -->
+                        <div class="vulnerability-card available" data-id="dior">
+                <div class="status-badge status-available">Bonus</div>
+                <div class="card-header">
+                    <div class="vulnerability-rank">⚡</div>
+                </div>
+                <div class="vulnerability-title"> Cross-Site Request Forgery</div>
+                <div class="vulnerability-description">
+                    Tricks users into performing actions on a site where they’re authenticated, without their consent.
+                </div>
+                <div class="vulnerability-actions">
+                    <a href="csrf.html" class="btn btn-primary">Start Challenge</a>
+                    <button class="btn btn-success" onclick="markCompleted('dior')" style="display: none;">Mark Complete</button>
+                </div>
+            </div>
+        </div>         <!-- Final Wrapper -->
+        </div>
+        
         <div class="footer">
             <p>🎯 Complete all challenges to become an OWASP Security Expert!</p>
             <p>Based on the OWASP Top 10 - 2021 | Educational purposes only</p>

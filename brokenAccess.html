@@ -5,27 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Broken Access Control Demo</title>
      <!-- <link rel="stylesheet" href="style/main.css"> -->
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 600px;
-      margin: 2rem auto;
-      text-align: center;
-    }
-    input, button {
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      width: 80%;
-    }
-    #output {
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      white-space: pre-wrap;
-      text-align: left;
-      background: #f9f9f9;
-    }
-  </style>
+           <link rel="stylesheet" href="style/challenges.css">
+     <script src="scripts/showExplanation.js" defer></script>   
 </head>
 <body>
 
@@ -43,7 +24,16 @@ In the secure section, entering your own user ID (1) shows your profile, but any
   <h2>✅ Secure Fetch User Profile</h2>
   <input type="number" id="userIdInputSecure" placeholder="Enter user ID to fetch (only own allowed)" />
   <button onclick="fetchUserProfileSecure()">Fetch Profile</button>
-
+<div class="section" id="explanation">
+  <h2 class="title">Explanation:</h2>
+  <p>
+    There should always be checks done to verify if the current user has access to the data is trying to access
+  </p>
+  On this code for example we are checking if the user Id being requested is the same as the current user.<br>
+  <code>
+    if (userId !== currentUserId)
+  </code>
+</div>
   <div id="output"></div>
 
   <script>
@@ -84,6 +74,7 @@ In the secure section, entering your own user ID (1) shows your profile, but any
       } else {
         output.textContent = 'User not found.';
       }
+      showExplanation();
     }
   </script>
 

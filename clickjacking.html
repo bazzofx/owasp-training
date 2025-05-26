@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Clickjacking Demo</title>
+       <link rel="stylesheet" href="style/challenges.css">
+     <script src="scripts/showExplanation.js" defer></script>   
+  <style>
+    
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+
+    #trapButton {
+      position: relative;
+      z-index: 2;
+      padding: 12px 24px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    #targetFrame {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 600px;
+      opacity: 0.1; /* Nearly invisible */
+      z-index: 1;
+      border: none;
+      pointer-events: auto;
+    }
+
+    .warning {
+      margin-top: 20px;
+      max-width: 600px;
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Click the button below to win a prize!</h1>
+  <button id="trapButton" onclick="showExplanation();">Show Explanation</button>
+<div class="section" id="explanation">
+    <h2 class="title">Explanation:</h2>
+    <p>
+The "Show Explanation" button overlays a nearly invisible iframe.<br>
+A real one when clicked would take the users unknowingly to the hidden content from another site.
+<br><br>
+These headers will prevent your site from being loaded in an iframe, blocking clickjacking completely.
+<h3 class="subtitle">Option 1: X-Frame-Options</h3>
+<b>X-Frame-Options: DENY</b>
+<h3 class="subtitle">Option 2: Content-Security-Policy (CSP)</h3>
+<b>Content-Security-Policy: frame-ancestors 'none';</b>
+<br>
+These headers prevent your site from being embedded in an iframe on any other domain — completely defeating clickjacking.       
+    </p>
+</div>
+  <!-- Embedded target site -->
+  <iframe id="targetFrame" src="https://cybersamurai.co.uk"></iframe>
+  <br> <br><br>
+<div class="section">
+  <p class="warning">
+    ⚠️ This is a demo of a clickjacking attack. You're actually clicking on a hidden external website inside an iframe.
+    Without protection like <code>X-Frame-Options</code> or <code>Content-Security-Policy</code>, your website can be misused like this.
+  </p>
+</div>
+</body>
+</html>

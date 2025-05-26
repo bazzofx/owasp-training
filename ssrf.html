@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SSRF Example</title>
+     <link rel="stylesheet" href="style/challenges.css">
+     <script src="scripts/showExplanation.js" defer></script>   
+</head>
+<body>
+
+  <h1>Server-Side Request Forgery (SSRF)</h1>
+<h2 class="title">Information:</h2>
+<p>
+    Use the below information to simulate a requests.
+    <ul>
+        <li>http://localhost:8000</li>
+        <li>https://api.example.com/data</li>
+    </ul>
+</p>
+  <h2>❌ Vulnerable Example</h2>
+  <p>Simulated: The server fetches any URL the user provides.</p>
+  <input id="insecureUrl" type="text" placeholder="Enter a URL (e.g. http://localhost:8000)" />
+  <button onclick="simulateInsecureSSRF()">Send Request</button>
+  <div class="output" id="insecureOutput"></div>
+
+  <h2>✅ Secure Example</h2>
+  <p>Only allows requests to safe domains.</p>
+  <input id="secureUrl" type="text" placeholder="Enter a safe URL (e.g. https://api.example.com/data)" />
+  <button onclick="simulateSecureSSRF()">Send Request</button>
+  <div class="output" id="secureOutput">
+  </div>
+  <br>
+<div class="section" id="explanation">
+    <h2 class="title">🛡️ Explanation:</h2>
+    <p class="text">
+<b>Vulnerable version:</b> The vulnerable version accepts any URL, risking access to internal systems. 
+Could access internal resources (http://localhost, metadata endpoints, etc.).<br><br>
+<b>Secure version:</b> Whitelists safe domains and blocks others to prevent abuse.<br>
+It only allows predefined, trusted domains to prevent malicious requests
+    </p>
+</div>
+
+
+  <script>
+    function simulateInsecureSSRF() {
+      const url = document.getElementById('insecureUrl').value;
+      // 🚨 Simulating an unsafe fetch to arbitrary URL (insecure)
+      document.getElementById('insecureOutput').textContent =
+        `Attempting to fetch: ${url}\n🚨 This could allow access to internal systems!`;
+    }
+
+    function simulateSecureSSRF() {
+      const url = document.getElementById('secureUrl').value;
+      const allowedDomains = ['https://api.example.com', 'https://trusted.com'];
+
+      const isValid = allowedDomains.some(domain => url.startsWith(domain));
+      const output = document.getElementById('secureOutput');
+
+      if (isValid) {
+        output.textContent = `✅ Request to ${url} allowed. Proceeding...`;
+      } else {
+        output.textContent = `❌ Request blocked: ${url} is not in the list of trusted domains.`;
+      }
+      showExplanation();
+    }
+  </script>
+</body>
+</html>

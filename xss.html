@@ -3,11 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>XSS - Example</title>
+         <link rel="stylesheet" href="style/challenges.css">
+     <script src="scripts/showExplanation.js" defer></script>   
 </head>
 <body>
-<h2 class="List"> List of XSS Vulnerabilities</h2>
+<h2 class="List"> Information:</h2>
+
 <p>
+  Use the below XSS examples on this page to test the vulnerability
     <ul>
 <li>&lt;script&gt;alert('XSS')&lt;/script&gt;</li>
 <li>&lt;img src="x" onerror="alert('XSS')"&gt;</li>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Security Logging and Monitoring Failures</title>
+       <link rel="stylesheet" href="style/challenges.css">
+       <script src="scripts/showExplanation.js" defer></script> 
+</head>
+<body>
+
+<h1>Security Logging and Monitoring Failures</h1>
+<h2 class="title">Information:</h2>
+<p>
+ Use the below credentails to login:
+ <ul>
+<li>admin</li>
+<li>StrongPasswordExample3</li>
+ </ul>   
+</p>
+
+<!-- ❌ Insecure System -->
+<h2>❌ Insecure: No Logging or Monitoring</h2>
+<input type="text" id="insecureUsername" placeholder="Username" />
+<input type="password" id="insecurePassword" placeholder="Password" />
+<button onclick="insecureAuth()">Login</button>
+<div id="insecureFeedback" class="log"></div>
+
+<!-- ✅ Secure System -->
+<h2>✅ Secure: Logged and Monitored</h2>
+<input type="text" id="secureUsername" placeholder="Username" />
+<input type="password" id="securePassword" placeholder="Password" />
+<button onclick="secureAuth()">Login</button>
+<br><br><br>
+
+<!-- Explanation -->
+
+  <h2 class="title" id="explanation">Explanation:</h2>
+<p class="text">
+Its important to log every important action within an application <br>
+this will help with early detection, on incident response, help monitor activity <br>
+and stay compliance with legal requirements.
+<br><br>
+ No logs = No visibility <br>
+No visibility  = No defense.<br>
+Logging is your system’s black box for security.  
+</p>
+
+<!-- Server Side Log Block -->
+<div class="section">
+<h2 class="title">🔐 Server Side Log:</h2>
+<div id="secureFeedback" class="log"></div>
+<div id="securityLog" class="log"></div>
+</div>
+<script>
+// ❌ Insecure: No feedback, no logs
+function insecureAuth() {
+  const user = document.getElementById('insecureUsername').value;
+  const pass = document.getElementById('insecurePassword').value;
+  const feedback = document.getElementById('insecureFeedback');
+
+  if (user === 'admin' && pass === 'admin123') {
+    feedback.textContent = 'Access granted (insecure)';
+    feedback.className = 'log info';
+  } else {
+    // No feedback or logging – silent failure
+    feedback.textContent = 'Access denied';
+    feedback.className = 'log error';
+  }
+}
+
+// ✅ Secure: Logs and monitors failed/suspicious attempts
+let failedAttempts = 0;
+
+function secureAuth() {
+  const user = document.getElementById('secureUsername').value;
+  const pass = document.getElementById('securePassword').value;
+  const feedback = document.getElementById('secureFeedback');
+  const log = document.getElementById('securityLog');
+
+  const validUser = 'admin';
+  const validPass = 'StrongPasswordExample3';
+
+  const timestamp = new Date().toLocaleString();
+
+  if (user === validUser && pass === validPass) {
+    feedback.textContent = '✅ Access granted';
+    feedback.className = 'log info';
+    log.innerHTML += `[${timestamp}] Successful login by ${user}<br>`;
+    console.log(`[${timestamp}] Successful login by ${user}`)
+    failedAttempts = 0; // reset counter
+  } else {
+    failedAttempts++;
+    feedback.textContent = '❌ Access denied';
+    feedback.className = 'log error';
+    log.innerHTML += `[${timestamp}] Failed login attempt by "${user}" (Attempt #${failedAttempts})<br>`;
+    console.log (`[${timestamp}] Failed login attempt by "${user}" (Attempt #${failedAttempts})`);
+    if (failedAttempts >= 3) {
+      log.innerHTML += `<span class="warning">🚨 Multiple failed attempts detected! Consider account lockout or alerting admins.</span><br>`;
+      console.log(`[WARNING] - 🚨 Multiple failed attempts detected! Consider account lockout or alerting admins.`)
+    }
+  }
+  showExplanation();
+}
+</script>
+
+</body>
+</html>
