@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Authentication Failure Example</title>
        <link rel="stylesheet" href="style/challenges.css">
-       <script src="scripts/showExplanation.js" defer></script> <!-- Imported part of seucureJQUeryDisplay -->       
+       <!-- <script src="scripts/showExplanation.js" defer></script> Imported part of seucureJQUeryDisplay        -->
 </head>
 <body>
 
@@ -62,8 +62,10 @@ async function secureLogin() {
   const passHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
   const validUser = 'admin';
-  const validHash = 'c3153f3e73f798a63ec9e3cb3345c20a8dc7fd697f5bc61cf0f9e58f8ccf7aa6'; // 'strongpassword'
-
+  const validHash = 'ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f'; // 'strongpassword 
+  // Obviously, the actual hash of the password would not be saved for on the page LOL!'
+// The validHash variable SHOULD NEVER BE SAVED ON THE ACTUAL PAGE, this is for demonstrational purposes only! - 
+// The password should be kept secure on a separate INTERNAL SERVER ACCESS ONLY!
   setTimeout(() => {
     if (user === validUser && passHash === validHash) {
       output.textContent = '✅ Secure login successful!';
@@ -72,6 +74,9 @@ async function secureLogin() {
       output.textContent = '❌ Invalid credentials (secure check).';
       output.className = 'output error';
     }
+    console.log("Verifying stored hash on database against hashedPassowrd...")
+    console.log("Hashed Password:" + passHash);
+    console.log("Valid Hash:" + validHash)
   }, 500); // simulate delay
 }
 </script>
