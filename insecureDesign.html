@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Insecure Design Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    input {
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+      width: 60%;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    .section {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+    pre {
+      background: #eee;
+      padding: 0.5rem;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Insecure Design – Password Reset Flow</h1>
+
+  <div class="section">
+    <h2>❌ Insecure Design: No Identity Verification</h2>
+    <p>Anyone can reset the password by just entering an email.</p>
+    <input type="email" id="emailInputInsecure" placeholder="Enter user's email">
+    <button onclick="insecureReset()">Reset Password</button>
+    <div id="outputInsecure"></div>
+  </div>
+
+  <div class="section">
+    <h2>✅ Secure Design: Token-Based Verification</h2>
+    <p>User must first receive and submit a reset token.</p>
+    <input type="email" id="emailInputSecure" placeholder="Enter your email">
+    <button onclick="sendToken()">Send MFA Token</button>
+    <br><br>
+    <input type="text" id="tokenInput" placeholder="Enter token">
+    <button onclick="secureReset()">Reset Password</button>
+    <div id="outputSecure"></div>
+  </div>
+
+  <script>
+    function insecureReset() {
+      const email = document.getElementById('emailInputInsecure').value;
+      document.getElementById('outputInsecure').textContent =
+        `🔓 Password reset link sent to ${email} (no verification required!)`;
+    }
+
+    let generatedToken = "";
+
+    function sendToken() {
+      const email = document.getElementById('emailInputSecure').value;
+      generatedToken = Math.random().toString(36).substring(2, 8).toUpperCase();
+      document.getElementById('outputSecure').textContent =
+        `📧 Token sent to ${email}: ${generatedToken} (simulated for demo)`;
+    }
+
+    function secureReset() {
+      const token = document.getElementById('tokenInput').value.trim();
+      if (token === generatedToken) {
+        document.getElementById('outputSecure').textContent =
+          '✅ Password reset authorized.';
+      } else {
+        document.getElementById('outputSecure').textContent =
+          '❌ Invalid token. Access denied.';
+      }
+    }
+  </script>
+
+</body>
+</html>

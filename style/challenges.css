@@ -1,0 +1,23 @@
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    input {
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+      width: 60%;
+    }
+    button {
+      padding: 0.5rem 1rem;
+    }
+    .section {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin-bottom: 2rem;
+      background: #f9f9f9;
+    }
+      #explanation, #explanation + p.text {
+    display: none;
+  }

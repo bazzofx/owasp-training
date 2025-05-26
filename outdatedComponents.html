@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vulnerable & Outdated Components Demo</title>
+     <link rel="stylesheet" href="style/challenges.css">
+     <script src="scripts/showExplanation.js" defer></script> <!-- Imported part of seucureJQUeryDisplay -->
+
+</head>
+<body>
+
+  <h1>Vulnerable and Outdated Components</h1>
+<h2 class="List"> List of XSS Vulnerabilities</h2>
+<p>
+    <ul>
+<li>&lt;script&gt;alert('XSS')&lt;/script&gt;</li>
+<li>&lt;img src="x" onerror="alert('XSS')"&gt;</li>
+<li>&lt;a href="javascript:alert('XSS')"&gt;Click me&lt;/a&gt;</li>
+    </ul>
+    </p>
+  <div class="section">
+    <h2>❌ Vulnerable jQuery Version (1.4.2)</h2>
+    <p>This version has known XSS risks via `.html()` on user input.</p>
+    <input type="text" id="vulnInput" placeholder="Enter input (try &lt;script&gt;alert('XSS')&lt;/script&gt;)">
+    <button onclick="vulnerableRender()">Render</button>
+    <div id="vulnOutput"></div>
+  </div>
+
+
+<div class="section">
+<h2>✅ Successful Secure jQuery Example</h2>
+<input type="text" id="secureJQueryInput" placeholder="Enter text safely" />
+<button onclick="secureJQueryDisplay()">Display Safely</button>
+<div id="secureJQueryOutput" style="margin-top:1rem; padding: 0.5rem; border: 1px solid #ccc;"></div>
+
+
+  </div>
+
+<!-- EXplanation -->
+<h2 class="title" id="explanation">Explanation:</h2>
+<p class="text">
+The user input is taken via jQuery .val().<br>
+The output is displayed using .text(), which safely escapes the content.<br>
+This avoids any XSS risk since .text() sets the text content rather than HTML.<br>
+</p>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> <!-- Imported part of seucureJQUeryDisplay -->
+  <!-- ❌ Load Vulnerable jQuery 1.4.2 -->
+  <script src="https://code.jquery.com/jquery-1.4.2.min.js"></script>
+  <script>
+    function vulnerableRender() {
+      const input = $('#vulnInput').val();
+      $('#vulnOutput').html('Output: ' + input); // ❌ Vulnerable to XSS
+    }
+
+    function secureJQueryDisplay() {
+    const userInput = $('#secureJQueryInput').val();
+
+    // Using jQuery's text() method to safely set text content, 
+    // which automatically escapes HTML special characters
+    $('#secureJQueryOutput').text(userInput);
+    showExplanation();
+  }
+
+  </script>
+
+
+
+
+
+</body>
+</html>

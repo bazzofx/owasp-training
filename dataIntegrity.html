@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Software and Data Integrity Failures</title>
+       <link rel="stylesheet" href="style/challenges.css">
+     <script src="scripts/showExplanation.js" defer></script> <!-- Imported part of seucureJQUeryDisplay -->       
+</head>
+<body>
+
+  <h1>Software and Data Integrity Failures</h1>
+<div class="section">
+  <h2>❌ Vulnerable: Untrusted Script Injection</h2>
+  <p>This example simulates loading a script dynamically from an untrusted source without verification.</p>
+  <button onclick="runInsecure()">Load and Run Insecure Script</button>
+  <div id="insecureOutput"></div>
+  </div>
+<div class="section">
+  <h2>✅ Secure: Trusted Source with Integrity</h2>
+  <p>This script is loaded from a secure, trusted CDN using Subresource Integrity (SRI).</p>
+  <button onclick="runSecure()">Run Secure Script</button>
+  <div id="secureOutput"></div>
+</div>
+<div class="section" id="explanation">
+<h2 class="title" >Explanation:</h2>
+<p>
+The third party script will only load if the SHA384 is verified and matchs the expected value<br><br>
+<code>
+  src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"<br>
+  integrity="sha384-EXAMPLEXAMPLKqRK5ZRy/lwrCc6bXEmtGYr5SwvP1pZ"<br>
+  crossorigin="anonymous"
+</code>
+</p>
+</div>
+
+
+
+  <!-- ✅ Secure Script with SRI -->
+<script src="scripts/showExplanation.js"></script> <!-- Imported part of seucureJQUeryDisplay -->
+<script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"
+  integrity="sha384-H6KKS1H1WwuERMSm+54dYLzjg0fKqRK5ZRyASdbrI/lwrCc6bXEmtGYr5SwvP1pZ"
+  crossorigin="anonymous"></script>
+
+  <!-- RUN Potential Dangerous script onload -->
+
+
+  <script>
+
+    
+    function runInsecure() {
+      const script = document.createElement('script');
+      script.src = "https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"; // Insecure HTTP source (simulated)
+      script.onload = () => {
+        document.getElementById('insecureOutput').textContent = 'Insecure third party script loaded (this could be dangerous!)';
+      };
+      script.onerror = () => {
+        document.getElementById('insecureOutput').textContent = 'Failed to load insecure script.';
+      };
+      document.body.appendChild(script);
+    }
+
+  function runSecure() {
+    const result = _.join(['Third party script hash has been verified and it matches our records'], ' ');
+    document.getElementById('secureOutput').textContent = result;
+    showExplanation();
+  }
+  </script>
+
+</body>
+
+</html>

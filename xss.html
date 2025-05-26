@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<h2 class="List"> List of XSS Vulnerabilities</h2>
+<p>
+    <ul>
+<li>&lt;script&gt;alert('XSS')&lt;/script&gt;</li>
+<li>&lt;img src="x" onerror="alert('XSS')"&gt;</li>
+<li>&lt;a href="javascript:alert('XSS')"&gt;Click me&lt;/a&gt;</li>
+    </ul>
+    </p>
+
+    <h1 id="welcome">Testing Script XSS</h1>
+    <h2 class="title">❌Vulnerable Code</h2>
+   <input type="text" id="nameInput" placeholder="Enter your name">
+  <button onclick="insecureDisplayUserName(document.getElementById('nameInput').value)">
+    Submit
+  </button>
+
+      <h2 class="title">✅Secure Code</h2>
+   <input type="text" id="nameInput" placeholder="Enter your name">
+  <button onclick="secureDisplayUserName(document.getElementById('nameInput').value)">
+    Submit
+  </button>
+
+<script>
+
+function insecureDisplayUserName(name) {
+  // ❌ WARNING: This code is intentionally vulnerable to XSS.
+  // It directly injects user input into the DOM without sanitization.
+  
+  const welcomeElement = document.getElementById('welcome');
+  welcomeElement.innerHTML = 'Welcome, ' + name + '!';
+}
+
+function secureDisplayUserName(name) {
+  // ✅ SECURE: Using textContent instead
+  document.getElementById('welcome').textContent = 
+    'Welcome, ' + name + '!';
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Authentication Failure Example</title>
+       <link rel="stylesheet" href="style/challenges.css">
+       <script src="scripts/showExplanation.js" defer></script> <!-- Imported part of seucureJQUeryDisplay -->       
+</head>
+<body>
+
+<h1>Authentication Failure Example</h1>
+
+<!-- ❌ Insecure Form -->
+<h2>❌ Insecure Login</h2>
+<input type="text" id="badUsername" placeholder="Username">
+<input type="password" id="badPassword" placeholder="Password">
+<button onclick="insecureLogin()">Login</button>
+<div id="badOutput" class="output"></div>
+
+<!-- ✅ Secure Form -->
+<h2>✅ Secure Login</h2>
+<input type="text" id="goodUsername" placeholder="Username">
+<input type="password" id="goodPassword" placeholder="Password">
+<button onclick="secureLogin()">Login</button>
+<div id="goodOutput" class="output"></div>
+
+<script>
+// ❌ Insecure: Hardcoded credentials on client side
+function insecureLogin() {
+  const user = document.getElementById('badUsername').value;
+  const pass = document.getElementById('badPassword').value;
+  const output = document.getElementById('badOutput');
+
+  output.textContent = 'Checking credentials...';
+  output.className = 'output info';
+
+  setTimeout(() => {
+    if (user === 'admin' && pass === 'password123') {
+      output.textContent = '✅ Logged in (insecure). This method is unsafe.';
+      output.className = 'output success';
+    } else {
+      output.textContent = '❌ Invalid credentials (insecure login).';
+      output.className = 'output error';
+    }
+  }, 500); // simulate delay
+}
+
+// ✅ Secure: Simulated backend check with hash
+async function secureLogin() {
+  const user = document.getElementById('goodUsername').value;
+  const pass = document.getElementById('goodPassword').value;
+  const output = document.getElementById('goodOutput');
+
+  output.textContent = '🔒 Hashing password and verifying...';
+  output.className = 'output info';
+
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pass);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const passHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+  const validUser = 'admin';
+  const validHash = 'c3153f3e73f798a63ec9e3cb3345c20a8dc7fd697f5bc61cf0f9e58f8ccf7aa6'; // 'strongpassword'
+
+  setTimeout(() => {
+    if (user === validUser && passHash === validHash) {
+      output.textContent = '✅ Secure login successful!';
+      output.className = 'output success';
+    } else {
+      output.textContent = '❌ Invalid credentials (secure check).';
+      output.className = 'output error';
+    }
+  }, 500); // simulate delay
+}
+</script>
+
+</body>
+</html>

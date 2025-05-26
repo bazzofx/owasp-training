@@ -1,0 +1,19 @@
+Given the following HTML and JavaScript example demonstrating a security concept (e.g., Security Misconfiguration), please create similar practical examples for other common web application vulnerabilities. Each example should include:
+
+A clear title indicating the vulnerability.
+
+An insecure demo with interactive elements (like buttons or inputs) that show how the vulnerability can be exploited or appears.
+
+A secure demo illustrating a proper fix or mitigation.
+
+Minimal but clear HTML, CSS, and JavaScript code to run the demo in a browser.
+
+Use the following sample as a template:
+
+
+<!-- Paste the full HTML example here -->
+
+
+Focus on vulnerabilities like Broken Access Control, Cross-Site Scripting (XSS), DOM-based Injection, Insecure Direct Object References, etc., while keeping the UI simple and user-friendly.
+
+Please generate complete standalone HTML examples, suitable for education and testing purposes.

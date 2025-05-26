@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Security Misconfiguration Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    #output {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      white-space: pre-wrap;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Security Misconfiguration Demo</h1>
+
+  <h2>❌ Insecure Debug Info Exposure</h2>
+  <button onclick="showDebugInfoInsecure()">Show Debug Info</button>
+
+  <h2>✅ Secure Debug Info Handling</h2>
+  <button onclick="showDebugInfoSecure()">Show Debug Info</button>
+
+  <div id="output"></div>
+
+  <script>
+    // Simulated debug info (sensitive)
+    const debugInfo = {
+      serverIP: "192.168.1.100",
+      dbPassword: "superSecret123!",
+      apiKey: "ABCDEF-123456-SECRET",
+      environment: "development"
+    };
+
+    // ❌ Insecure: Debug info displayed publicly
+    function showDebugInfoInsecure() {
+      const output = document.getElementById('output');
+      output.textContent = JSON.stringify(debugInfo, null, 2);
+    }
+
+    // ✅ Secure: Debug info hidden or sanitized for production
+    function showDebugInfoSecure() {
+      const output = document.getElementById('output');
+      output.textContent = "Debug info is not available in production.";
+    }
+  </script>
+
+</body>
+</html>

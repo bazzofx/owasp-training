@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cryptographic Failures Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    pre {
+      background: #f4f4f4;
+      border: 1px solid #ddd;
+      padding: 1rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+    input {
+      padding: 0.5rem;
+      margin-right: 0.5rem;
+      width: 60%;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+    }
+    #output {
+      margin: 1rem 0;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+    }
+    h2.title {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Cryptographic Failures</h1>
+
+  <h2 class="title">❌ Insecure Example (Base64 Encoding)</h2>
+  <input type="text" id="insecureInput" placeholder="Enter secret text" />
+  <button onclick="encodeInsecure()">Encode</button>
+  <div id="insecureOutput"></div>
+  <pre><code id="insecureCodeBlock"></code></pre>
+
+  <h2 class="title">✅ Secure Example (SHA-256 Hashing)</h2>
+  <input type="text" id="secureInput" placeholder="Enter secret text" />
+  <button onclick="encodeSecure()">Hash</button>
+ <!-- <h2 id="secureCodeBlock"></h2> -->
+  <div id="secureOutput"></div>
+  <pre><code id="secureCodeBlock"></code></pre>
+  <script>
+  function encodeInsecure() {
+    const input = document.getElementById('insecureInput').value;
+    const encoded = btoa(input); // ❌ Base64 is NOT encryption
+    document.getElementById('insecureOutput').textContent = 'Encoded: ' + encoded;
+  }
+
+  async function encodeSecure() {
+    const input = document.getElementById('secureInput').value;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(input);
+    console.log("data:" + data);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    console.log("Hash" + hashHex);
+    document.getElementById('secureOutput').textContent = 'SHA-256 Hash: ' + hashHex;
+  }
+
+  const insecureCode = `
+function encodeInsecure() {
+  const input = document.getElementById('insecureInput').value;
+  const encoded = btoa(input); // ❌ Base64 is NOT encryption
+  document.getElementById('insecureOutput').textContent = 'Encoded: ' + encoded;
+}
+`.trim();
+
+  const secureCode = `
+async function encodeSecure() {
+  const input = document.getElementById('secureInput').value;
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  document.getElementById('secureOutput').textContent = 'SHA-256 Hash: ' + hashHex;
+}
+`.trim();
+
+  // Ensure DOM elements are available before setting their content
+  window.onload = () => {
+    document.getElementById('insecureCodeBlock').textContent = insecureCode;
+    document.getElementById('secureCodeBlock').textContent = secureCode;
+  };
+</script>
+
+
+
+</body>
+</html>

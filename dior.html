@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DIOR Example</title>
+  <style>
+    /* Center all contents */
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      box-sizing: border-box;
+      text-align: center;
+      background-color: #f9f9f9;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 8px 0;
+      font-family: monospace;
+      background: #eee;
+      padding: 6px 10px;
+      border-radius: 4px;
+      max-width: 400px;
+      word-break: break-word;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+      margin: 10px 0;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+      border-radius: 4px;
+      background-color: #555;
+      color: white;
+      margin-bottom: 30px;
+    }
+    button:hover {
+      background-color: #333;
+    }
+    h1#welcome {
+      margin-top: 30px;
+      margin-bottom: 40px;
+      color: #222;
+    }
+    h2.title {
+      margin-top: 40px;
+      margin-bottom: 10px;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+  <h2 class="List">List of DIOR Vulnerabilities</h2>
+  <p>
+    <ul>
+      <li>&lt;div data-bind="text: userInput"&gt;&lt;/div&gt;</li>
+      <li>&lt;input data-bind="value: userInput" /&gt;</li>
+    <li>&lt;script&gt;document.write(new URLSearchParams(window.location.search).get('name'))&lt;/script&gt;</li>
+<li>&lt;script&gt;alert('XSS')&lt;/script&gt;</li>
+<li>&lt;img src="x" onerror="alert('XSS')"&gt;</li>
+<li>&lt;a href="javascript:alert('XSS')"&gt;Click me&lt;/a&gt;</li>
+    </ul>
+  </p>
+<h2 class="title">Explantion</h2>
+<p>
+  The same input payloads ie:<br><b> &lt;img src="x" onerror="alert('XSS')"&gt;</b><br> Can be used to test both XSS and DIOR. <br>
+  Depending on how your code handles/display those inputs.<br>
+If your code uses <b>innerHTML, document.write, eval,</b> or unsanitized bindings with those inputs,<br> you are testing for DIOR — which results in XSS if exploited.
+</p>
+  <h1 id="welcome">Testing DIOR Vulnerabilities</h1>
+
+<h2 class="title">❌ Vulnerable Code</h2>
+<input type="text" id="inputInsecure" placeholder="Enter your input" />
+<button onclick="insecureDisplayDIOR(document.getElementById('inputInsecure').value)">
+  Submit
+</button>
+
+<h2 class="title">✅ Secure Code</h2>
+<input type="text" id="inputSecure" placeholder="Enter your input" />
+<button onclick="secureDisplayDIOR(document.getElementById('inputSecure').value)">
+  Submit
+</button>
+
+<!-- Output container -->
+<div id="welcome" style="margin-top: 20px; font-weight: bold;"></div>
+
+<script>
+  function insecureDisplayDIOR(input) {
+    // ❌ Vulnerable: directly inserts user input as HTML
+    document.getElementById('welcome').innerHTML = input;
+  }
+
+  function secureDisplayDIOR(input) {
+    // ✅ Safe: inserts user input as plain text
+    document.getElementById('welcome').textContent = 'DIOR says: ' + input;
+  }
+</script>
+
+</body>
+</html>

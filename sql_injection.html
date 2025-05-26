@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SQL Injection Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    input, button {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 80%;
+      font-size: 1rem;
+    }
+    #output {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      white-space: pre-wrap;
+      text-align: left;
+      font-family: monospace;
+    }
+    .examples {
+      text-align: left;
+      margin-bottom: 1rem;
+      font-family: monospace;
+      background: #eee;
+      padding: .5rem;
+      border-radius: 4px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .allowed-query {
+      text-align: left;
+      margin-bottom: 1rem;
+      font-family: monospace;
+      background: #dff0d8;
+      border: 1px solid #3c763d;
+      color: #3c763d;
+      border-radius: 4px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>SQL Injection Demo</h1>
+
+
+  <h2>Allowed Query Pattern</h2>
+  <div class="allowed-query">
+<ul>
+  <li>Search for the name of the user</li>
+  <li>alice</li>
+  <li>bob</li>
+  <li>admin</li>
+</ul>
+  </div>
+  
+  <h2>Example Malicious Queries</h2>
+  <div class="examples">
+    <p>SQL Injection Example Query - input this in the username field</p>
+    <ul>
+      <li><code>alice</code> — normal user lookup</li>
+      <li><code>' OR '1'='1</code> — simulates SQL Injection to return all users (insecure only)</li>
+    </ul>
+  </div>
+  <h2>❌ Insecure Query Execution</h2>
+  <input type="text" id="inputInsecure" placeholder="Enter username" />
+  <button onclick="runQueryInsecure()">Run Query</button>
+
+  <h2>✅ Secure Query Execution</h2>
+  <input type="text" id="inputSecure" placeholder="Enter username" />
+  <button onclick="runQuerySecure()">Run Query</button>
+
+  <div id="output"></div>
+
+  <script>
+    // Simulated database
+    const usersDB = [
+      { username: "alice", email: "alice@charliebrown.com" },
+      { username: "bob", email: "bob@charliebrown.com" },
+      { username: "admin", email: "admin@charliebrown.com" }
+    ];
+
+    // Insecure: Constructs query by concatenation (vulnerable to SQL Injection)
+    function runQueryInsecure() {
+      const input = document.getElementById('inputInsecure').value.trim();
+      const output = document.getElementById('output');
+
+      // Simulated raw SQL query string construction
+      const query = `SELECT * FROM users WHERE username = '${input}';`;
+
+      // Vulnerable simulation: if input contains SQL injection, simulate attack effect
+      if (input.includes("' OR '1'='1")) {
+        output.textContent = `Query executed:\n${query}\n\nResult: ALL users returned (SQL Injection!)\n` + 
+          JSON.stringify(usersDB, null, 2);
+      } else {
+        // Normal filtering
+        const user = usersDB.find(u => u.username === input);
+        if (user) {
+          output.textContent = `Query executed:\n${query}\n\nResult:\n` + JSON.stringify(user, null, 2);
+        } else {
+          output.textContent = `Query executed:\n${query}\n\nResult: No user found.`;
+        }
+      }
+    }
+
+    // Secure: Uses parameterized query simulation (no injection possible)
+    function runQuerySecure() {
+      const input = document.getElementById('inputSecure').value.trim();
+      const output = document.getElementById('output');
+
+      // Simulate parameterized query by safely filtering without string concatenation
+      const query = "SELECT * FROM users WHERE username = ?;";
+
+      const user = usersDB.find(u => u.username === input);
+      if (user) {
+        output.textContent = `Parameterized Query executed:\n${query}\nWith parameter: ${input}\n\nResult:\n` + JSON.stringify(user, null, 2);
+      } else {
+        output.textContent = `Parameterized Query executed:\n${query}\nWith parameter: ${input}\n\nResult: No user found.`;
+      }
+    }
+  </script>
+
+</body>
+</html>

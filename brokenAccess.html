@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Broken Access Control Demo</title>
+     <!-- <link rel="stylesheet" href="style/main.css"> -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    input, button {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 80%;
+    }
+    #output {
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      white-space: pre-wrap;
+      text-align: left;
+      background: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Broken Access Control Test</h1>
+
+  <p>
+In the insecure section, enter any user ID (e.g., 2 or 3) and click Fetch Profile — it shows data for that user, no restrictions.
+In the secure section, entering your own user ID (1) shows your profile, but any other input shows an Access Denied message.
+</p>
+  <h2>❌ Insecure Fetch User Profile</h2>
+
+  <input type="number" id="userIdInputInsecure" placeholder="Enter user ID to fetch (any user)" />
+  <button onclick="fetchUserProfileInsecure()">Fetch Profile</button>
+
+  <h2>✅ Secure Fetch User Profile</h2>
+  <input type="number" id="userIdInputSecure" placeholder="Enter user ID to fetch (only own allowed)" />
+  <button onclick="fetchUserProfileSecure()">Fetch Profile</button>
+
+  <div id="output"></div>
+
+  <script>
+    // Simulated database
+    const userDB = {
+      1: { id: 1, name: "Alice", role: "user", email: "alice@example.com" },
+      2: { id: 2, name: "Bob", role: "admin", email: "bob@example.com" },
+      3: { id: 3, name: "Charlie", role: "user", email: "charlie@example.com" }
+    };
+
+    // Simulate the currently logged-in user ID (normally server-side)
+    const currentUserId = 1;
+
+    // Insecure function: no access control checks
+    function fetchUserProfileInsecure() {
+      const userId = Number(document.getElementById('userIdInputInsecure').value);
+      const output = document.getElementById('output');
+
+      if (userDB[userId]) {
+        output.textContent = `Fetched user profile:\n${JSON.stringify(userDB[userId], null, 2)}`;
+      } else {
+        output.textContent = 'User not found.';
+      }
+    }
+
+    // Secure function: checks if requested user ID matches current user
+    function fetchUserProfileSecure() {
+      const userId = Number(document.getElementById('userIdInputSecure').value);
+      const output = document.getElementById('output');
+
+      if (userId !== currentUserId) {
+        output.textContent = 'Access Denied: You are not authorized to view this profile.';
+        return;
+      }
+
+      if (userDB[userId]) {
+        output.textContent = `Fetched user profile:\n${JSON.stringify(userDB[userId], null, 2)}`;
+      } else {
+        output.textContent = 'User not found.';
+      }
+    }
+  </script>
+
+</body>
+</html>
